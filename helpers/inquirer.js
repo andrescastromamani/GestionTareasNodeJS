@@ -1,5 +1,6 @@
 var inquirer = require('inquirer');
 var colors = require('colors');
+const Tarea = require('../models/tarea');
 
 const preguntas = [
     {
@@ -45,7 +46,7 @@ const inquirerMenu = async () => {
     console.log('====================='.green)
     console.log('Seleccione una Opcion');
     console.log('=====================\n'.green);
-    const {opcion} = await inquirer.prompt(preguntas);
+    const { opcion } = await inquirer.prompt(preguntas);
     return opcion;
 }
 const pausa = async () => {
@@ -58,8 +59,8 @@ const pausa = async () => {
     ]
     console.log('\n');
     await inquirer.prompt(question);
-}   
-const leerInput = async(message)=>{
+}
+const leerInput = async (message) => {
     const question = [
         {
             type: 'input',
@@ -73,12 +74,48 @@ const leerInput = async(message)=>{
             }
         }
     ]
-    const {desc} = await inquirer.prompt(question)
+    const { desc } = await inquirer.prompt(question)
     return desc
 }
+const listadoTareasBorrar = async (tareas = []) => {
+    const choices = tareas.map((tarea , i) => {
+        const index = `${i + 1}.`.green;
+        return {
+            value: tarea.id,
+            name: `${index} ${tarea.desc}`
+        }
+    });
+    choices.unshift({
+        value: '0',
+        name: `${'0.'.green} Cancelar`.red,
+    })
+    const question = [
+        {
+            type: 'list',
+            name: 'id',
+            message: '¿Qué tarea deseas borrar?',
+            choices: choices
+        }
+    ]
+    const { id } = await inquirer.prompt(question);
+    return id
+}
 
+const confirmar = async (message) => {
+    const question = [
+        {
+            type: 'confirm',
+            name: 'ok',
+            message: message,
+        }
+    ]
+    const { ok } = await inquirer.prompt(question);
+    return ok;
+}
 module.exports = {
     inquirerMenu,
     pausa,
-    leerInput
+    leerInput,
+    listadoTareasBorrar,
+    confirmar
 }
