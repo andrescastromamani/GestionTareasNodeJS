@@ -3,7 +3,7 @@ const Tarea = require('./tarea');
 class Tareas {
     _listado = {}
 
-    get listadoArr(){
+    get listadoArr() {
         const listado = [];
         Object.keys(this._listado).forEach(id => {
             const tarea = this._listado[id];
@@ -11,29 +11,55 @@ class Tareas {
         })
         return listado;
     };
-    constructor (){
+    constructor() {
         this._listado = {}
     }
-    cargarTareasFromArray(tareas = []){
+    borrarTarea(id = '') {
+        if (this._listado[id]) {
+            delete this._listado[id];
+        }
+    }
+    cargarTareasFromArray(tareas = []) {
         tareas.forEach(tarea => {
             this._listado[tarea.id] = tarea;
         })
     }
 
-    crearTarea(desc = ''){
+    crearTarea(desc = '') {
         const tarea = new Tarea(desc);
         this._listado[tarea.id] = tarea;
     }
-    listadoCompleto(){
+    listadoCompleto() {
         console.log();
-        this.listadoArr.forEach((tarea,i) => {
-            const index = `${i+1}`.green;
-            const {desc, completadoEn} = tarea;
-            const estado = (completadoEn) 
-                            ? 'Completado'.green
-                            : 'Pendiente'.red
+        this.listadoArr.forEach((tarea, i) => {
+            const index = `${i + 1}.`.green;
+            const { desc, completadoEn } = tarea;
+            const estado = (completadoEn)
+                ? 'Completado'.green
+                : 'Pendiente'.red
             console.log(`${index} ${desc} :: ${estado}`);
         });
+    }
+    listarCompletadosPendientes(completadas = true) {
+        console.log();
+        if (completadas) {
+            this.listadoArr.forEach((tarea, i) => {
+                const index = `${i + 1}.`.green;
+                const { desc, completadoEn } = tarea;
+                const estado = 'Completado'.green;
+                if (completadoEn) {
+                    console.log(`${index} ${desc} :: ${estado}`);
+                }
+            });
+        }else {
+            this.listadoArr.forEach((tarea, i) => {
+                const index = `${i + 1}.`.green;
+                const { desc, completadoEn } = tarea;
+                if (!completadoEn) {
+                    console.log(`${index} ${desc} :: ${'Pendiente'.red}`);
+                }
+            });
+        }
     }
 }
 

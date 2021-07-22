@@ -25,6 +25,12 @@ const main = async() => {
             case '2':
                 tareas.listadoCompleto();
             break;
+            case '3':
+                tareas.listarCompletadosPendientes(true);
+            break;
+            case '4':
+                tareas.listarCompletadosPendientes(false);
+            break;
         }
         guardarArchivo(tareas.listadoArr);
         await pausa();
