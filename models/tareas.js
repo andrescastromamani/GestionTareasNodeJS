@@ -46,9 +46,9 @@ class Tareas {
             this.listadoArr.forEach((tarea, i) => {
                 const index = `${i + 1}.`.green;
                 const { desc, completadoEn } = tarea;
-                const estado = 'Completado'.green;
+                const estado = completadoEn;
                 if (completadoEn) {
-                    console.log(`${index} ${desc} :: ${estado}`);
+                    console.log(`${index} ${desc} :: ${estado.green}`);
                 }
             });
         }else {
@@ -60,6 +60,19 @@ class Tareas {
                 }
             });
         }
+    }
+    togleCompletado(ids = []) {
+        ids.forEach(id => {
+            const tarea = this._listado[id];
+            if (!tarea.completadoEn) {
+                tarea.completadoEn = new Date().toISOString();
+            }
+        });
+        this.listadoArr.forEach(tarea => {
+            if (!ids.includes(tarea.id)) {
+                this._listado[tarea.id].completadoEn = null;
+            }
+        })
     }
 }
 
